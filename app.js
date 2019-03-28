@@ -26,7 +26,7 @@ const SERVER_HOST = '0.0.0.0';
 
 const server = app.listen(SERVER_PORT, SERVER_HOST, () => {
   console.log('======================================')
-  console.log(`Now listening via ${LOCAL_IP}:${PORT}!`)
+  console.log(`Now listening on port ${SERVER_PORT}!`)
   console.log('======================================')
 });
 
