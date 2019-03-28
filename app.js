@@ -23,7 +23,6 @@ app.use('/api/ex', external);
 // start the server
 const SERVER_PORT = process.env.PORT || 3000;
 const SERVER_HOST = '0.0.0.0';
-
 const server = app.listen(SERVER_PORT, SERVER_HOST, () => {
   console.log('======================================')
   console.log(`Now listening on port ${SERVER_PORT}!`)
@@ -31,11 +30,8 @@ const server = app.listen(SERVER_PORT, SERVER_HOST, () => {
 });
 
 process.title = 'lotusService';
-
 process.on('SIGTERM', () => {
-
   // handle graceful shutdown here
-
   server.close(() => {
     console.log('Server shut off.');
   });
