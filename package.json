@@ -1,7 +1,7 @@
 {
-  "name": "express",
-  "version": "1.0.0",
-  "description": "",
+  "name": "lotus-service",
+  "version": "0.0.3",
+  "description": "Backend express/node server for Lotus.",
   "main": "app.js",
   "dependencies": {
     "express": "^4.16.4",
@@ -13,8 +13,10 @@
     "eslint": "^5.15.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "stop": "pkill --signal SIGTERM lotusService"
   },
-  "author": "",
+  "author": "Eddy Leon",
   "license": "ISC"
 }

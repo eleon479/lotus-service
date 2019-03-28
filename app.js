@@ -26,8 +26,19 @@ const PORT = 3000;
 //const LOCAL_IP = '192.168.1.191';
 const LOCAL_IP = 'localhost';
 
-app.listen(PORT, LOCAL_IP, () => {
+const server = app.listen(PORT, LOCAL_IP, () => {
   console.log('======================================')
   console.log(`Now listening via ${LOCAL_IP}:${PORT}!`)
   console.log('======================================')
+});
+
+process.title = 'lotusService';
+
+process.on('SIGTERM', () => {
+
+  // handle graceful shutdown here
+
+  server.close(() => {
+    console.log('Server shut off.');
+  });
 });
