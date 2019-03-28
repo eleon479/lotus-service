@@ -21,12 +21,10 @@ app.use('/api/in', internal);
 app.use('/api/ex', external);
 
 // start the server
-const PORT = process.env.PORT || 3000;
+const SERVER_PORT = process.env.PORT || 3000;
+const SERVER_HOST = '0.0.0.0';
 
-//const LOCAL_IP = '192.168.1.191';
-const LOCAL_IP = 'localhost';
-
-const server = app.listen(PORT, LOCAL_IP, () => {
+const server = app.listen(SERVER_PORT, SERVER_HOST, () => {
   console.log('======================================')
   console.log(`Now listening via ${LOCAL_IP}:${PORT}!`)
   console.log('======================================')
