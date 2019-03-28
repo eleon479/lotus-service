@@ -21,7 +21,7 @@ app.use('/api/in', internal);
 app.use('/api/ex', external);
 
 // start the server
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 //const LOCAL_IP = '192.168.1.191';
 const LOCAL_IP = 'localhost';
