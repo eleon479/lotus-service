@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { getUsers } = require('../middleware/pg');
+const { pool, getUsers } = require('../middleware/pg');
 
 router.get('/', (req, res) => {
   getUsers()
@@ -9,10 +9,23 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:userId', (req, res) => {
-  const userId = Number(req.params.userId);
-  const userResult = userDb.find(user => user.userId === userId);
 
-  res.send(userResult);
+  const userId = Number(req.params.userId);
+  const query = `SELECT * FROM users WHERE id = ${userId};`;
+  const userPromise = new Promise((resolve, reject) => {
+    pool.query(query, (error, results) => {
+      if (error) reject();
+      resolve(results.rows[0]);
+    });
+  });
+
+  let userResult = [];
+  
+  userPromise
+    .then(results => userResult = results)
+    .catch(error => userResult = [])
+    .finally(res.send(userResult));
+
 });
 
 module.exports = router;
