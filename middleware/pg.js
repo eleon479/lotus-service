@@ -7,8 +7,17 @@ const config = {
 
 const pool = new Pool(config);
 
-pool.on('connect', () => {
-  console.log('!!! connected to the Database !!!');
+pool.on('connect', (client) => {
+  console.log('!!! client connected to the Database !!!');
+});
+
+pool.on('acquire', (client) => {
+  console.log('!!! client acquired(?) !!!');
+});
+
+pool.on('remove', (client) => {
+  console.log('!!! client removed !!!');
+  // process.exit(0);
 });
 
 pool.on('error', (err, client) => {
@@ -17,11 +26,6 @@ pool.on('error', (err, client) => {
   process.exit(-1);
 });
 
-pool.on('remove', (client) => {
-  console.log('!!! client removed !!!');
-  client.release();
-  // process.exit(0);
-});
 
 /*
   Usage (example):
