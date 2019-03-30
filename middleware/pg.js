@@ -11,7 +11,7 @@ function connect() {
 
   client.connect();
 
-  const sampleQuery = 'SELECT * FROM useres WHERE id = 1;';
+  const sampleQuery = 'SELECT * FROM users WHERE id = 1;';
 
   client.query(sampleQuery, (err, res) => {
     if (err) throw err;
