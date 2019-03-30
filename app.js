@@ -14,15 +14,21 @@ pool.connect()
   .then(client => {
 
     return client.query('SELECT * FROM users;')
+      
       .then(res => {
         client.release();
         console.log(res.rows);
       })
+      
       .catch(e => {
         client.release();
-        console.log(err.stack);
+        console.error('Error in nested pool promise: ', e);
       });
-      
+
+  })
+  .catch(e => {
+    pool.end();
+    console.log('Error in connecting pool');
   });
 
 // 3rd party middleware imports
