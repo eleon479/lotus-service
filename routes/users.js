@@ -15,7 +15,7 @@ router.get('/:userId', (req, res) => {
   const userPromise = new Promise((resolve, reject) => {
     pool.query(query, (error, results) => {
       if (error) reject();
-      resolve(results.rows[0]);
+      resolve(results);
     });
   });
 
