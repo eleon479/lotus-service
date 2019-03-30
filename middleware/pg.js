@@ -15,7 +15,7 @@ let lotusDatabase = {
   },
   query(queryString, callbackFn) {
     this.client.connect();
-    this.client.query(queryString, callback);
+    this.client.query(queryString, callbackFn);
     this.client.end();
   },
   disconnect() {
