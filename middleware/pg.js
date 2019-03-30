@@ -10,16 +10,18 @@ function connect() {
   });
 
   client.connect();
-  client.query(
-    'SELECT table_schema,table_name FROM information_schema.tables;',
-    (err, res) => {
-      if (err) throw err;
-      for (let row of res.rows) {
-        console.log(JSON.stringify(row));
-      }
-      client.end();
+
+  const sampleQuery = 'SELECT * FROM useres WHERE id = 1;';
+
+  client.query(sampleQuery, (err, res) => {
+    if (err) throw err;
+    for (let row of res.rows) {
+      console.log(JSON.stringify(row));
     }
-  );
+    console.log('closing connection...');
+    client.end();
+    console.log('connectiong ended');
+  });
 }
 
 // CRUD operations
