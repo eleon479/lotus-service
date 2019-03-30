@@ -35,4 +35,5 @@ const WELCOME_MSG = '='.repeat(40) + `\nNow listening on port ${SERVER_PORT}!\n`
 
 const server = app.listen(SERVER_PORT, SERVER_HOST, () => {
   console.log(WELCOME_MSG);
+  console.log('Running in: ' + process.env.NODE_ENV + ' mode.');
 });
