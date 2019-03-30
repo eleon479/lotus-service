@@ -8,7 +8,7 @@ const helmet = require('helmet');
 
 // lotus middleware and routes
 const cors = require('./middleware/cors');
-const pg = require('./middleware/pg');
+const lotusClient = require('./middleware/pg');
 const users = require('./routes/users');
 const moves = require('./routes/moves');
 
@@ -30,27 +30,20 @@ app.use('/api/ext/prices', prices);
 app.use('/api/ext/quotes', quotes);
 app.use('/api/ext/charts', charts);
 
-// start the server
+// start the node server
 const SERVER_PORT = process.env.PORT || 3000;
 const SERVER_HOST = '0.0.0.0';
 const server = app.listen(SERVER_PORT, SERVER_HOST, () => {
   console.log('======================================');
   console.log(`Now listening on port ${SERVER_PORT}!`);
   console.log('======================================');
-  console.log('-Attempting to connect to database...');
 
-  try {
-    pg.connect();
-    console.log('Connected successfully!');
-  } catch {
-    console.log('Error - Could not connect to database.');
-  }
+  // try {
+  //   lotusClient.connect();
+  //   console.log(' - - - - Database Connection Established - - - -');
+  // } catch {
+  //   console.log('Error - Could not connect to database.');
+  // }
 });
 
-process.title = 'lotusService';
-process.on('SIGTERM', () => {
-  // handle graceful shutdown here
-  server.close(() => {
-    console.log('Server shut off.');
-  });
-});
+// lotusClient.disconnect();

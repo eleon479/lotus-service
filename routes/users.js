@@ -1,25 +1,18 @@
 const express = require('express');
 const router = express.Router();
-
-const userDb = [
-  {
-    userId: 1,
-    tag: 'eleon479',
-    firstName: 'Eddy',
-    lastName: 'Leon',
-    avatar: 'avatar2'
-  },
-  {
-    userId: 2,
-    tag: 'wsb',
-    firstName: 'Walt',
-    lastName: 'Streebets',
-    avatar: 'avatar6'
-  }
-];
+const lotusClient = require('../middleware/pg');
 
 router.get('/', (req, res) => {
-  res.send(userDb);
+  let userQuery = 'SELECT * FROM users;';
+  //let userResult = [];
+
+  lotusClient.query(userQuery, (qerr, qres) => {
+    if (qerr) throw qerr;
+    // for ( ... ) { }
+    res.send(qres.rows);
+  });
+
+  //res.send(userDb);
 });
 
 router.get('/:userId', (req, res) => {

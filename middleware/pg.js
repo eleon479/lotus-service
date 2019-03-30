@@ -1,7 +1,30 @@
 const { Client } = require('pg');
 
-// establish connection
-function connect() {
+let lotusDatabase = {
+  openConnection: false,
+  client: new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: true
+  }),
+  connect() {
+    if (!process.env.DATABASE_URL) {
+      throw err;
+    } else {
+      this.client.connect();
+    }
+  },
+  query(queryString, callbackFn) {
+    this.client.connect();
+    this.client.query(queryString, callback);
+    this.client.end();
+  },
+  disconnect() {
+    this.client.end();
+  }
+};
+
+/*
+function connect(client) {
   if (!process.env.DATABASE_URL) throw err;
 
   const client = new Client({
@@ -23,14 +46,6 @@ function connect() {
     console.log('connectiong ended');
   });
 }
+*/
 
-// CRUD operations
-function insert() {} // Create
-function select() {} // Read
-function update() {} // Update
-function remove() {} // Delete
-
-// end connection
-function close() {}
-
-module.exports = { connect };
+module.exports = lotusDatabase;
