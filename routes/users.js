@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-//const lotusClient = require('../middleware/pg');
+const { getUsers } = require('../middleware/pg');
 
 router.get('/', (req, res) => {
-  res.send([]);
-
-  // lotusClient.fetchUsers();
+  getUsers()
+    .then((results) => { res.send(results); })
+    .catch((errors) => { res.send([]) });
 });
 
 router.get('/:userId', (req, res) => {
