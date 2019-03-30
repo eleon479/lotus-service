@@ -2,17 +2,38 @@
 const express = require('express');
 const app = express();
 
+const { Pool } = require('pg');
+const pool = new Pool();
+
+pool.on('error', (err, client) => {
+  console.error('Unexpected error on idle client', err);
+  process.exit(-1);
+});
+
+pool.connect()
+  .then(client => {
+
+    return client.query('SELECT * FROM users;')
+      .then(res => {
+        client.release();
+        console.log(res.rows);
+      })
+      .catch(e => {
+        client.release();
+        console.log(err.stack);
+      });
+      
+  });
+
 // 3rd party middleware imports
 const morgan = require('morgan');
 const helmet = require('helmet');
 
 // lotus middleware and routes
 const cors = require('./middleware/cors');
-const lotusClient = require('./middleware/pg');
+/*const lotusClient = require('./middleware/pg');*/
 const users = require('./routes/users');
 const moves = require('./routes/moves');
-
-// lotus external routes
 const prices = require('./routes/ext/prices');
 const quotes = require('./routes/ext/quotes');
 const charts = require('./routes/ext/charts');

@@ -1,18 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const lotusClient = require('../middleware/pg');
+//const lotusClient = require('../middleware/pg');
 
 router.get('/', (req, res) => {
-  let userQuery = 'SELECT * FROM users;';
-  //let userResult = [];
+  res.send([]);
 
-  lotusClient.query(userQuery, (qerr, qres) => {
-    if (qerr) throw qerr;
-    // for ( ... ) { }
-    res.send(qres.rows);
-  });
-
-  //res.send(userDb);
+  // lotusClient.fetchUsers();
 });
 
 router.get('/:userId', (req, res) => {
