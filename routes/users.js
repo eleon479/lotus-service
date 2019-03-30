@@ -29,7 +29,7 @@ router.get('/:userId', (req, res) => {
   let userResult = [];
   
   userPromise
-    .then((ok) => {res.send(ok)})
+    .then((ok) => {res.send(ok[0])})
     .catch((e) => {res.send([])});
 
 });
