@@ -13,12 +13,14 @@ pool.on('connect', () => {
 
 pool.on('error', (err, client) => {
   console.error('!!! Unexpected error on idle client !!!', err);
+  client.release(err);
   process.exit(-1);
 });
 
-pool.on('remove', () => {
+pool.on('remove', (client) => {
   console.log('!!! client removed !!!');
-  process.exit(0);
+  client.release();
+  // process.exit(0);
 });
 
 /*
