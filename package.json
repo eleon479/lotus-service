@@ -1,9 +1,10 @@
 {
   "name": "lotus-service",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Backend express/node server for Lotus.",
   "main": "app.js",
   "dependencies": {
+    "dotenv": "^7.0.0",
     "express": "^4.16.4",
     "helmet": "^3.16.0",
     "morgan": "^1.9.1",
@@ -15,9 +16,17 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
-    "stop": "pkill --signal SIGTERM lotusService"
+    "start": "node app.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eleon479/lotus-service.git"
+  },
+  "keywords": [],
   "author": "Eddy Leon",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eleon479/lotus-service/issues"
+  },
+  "homepage": "https://github.com/eleon479/lotus-service#readme"
 }

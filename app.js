@@ -1,5 +1,8 @@
 // core express and database pool imports
 const express = require('express');
+const dotenv = require('dotenv');
+dotenv.config();
+
 const { pool } = require('./middleware/pg'); // change to /services ?
 const app = express();
 
@@ -29,7 +32,7 @@ app.use('/api/ext/quotes', quotes);
 app.use('/api/ext/charts', charts);
 
 // start the node server
-const SERVER_PORT = process.env.PORT || 3000;
+const SERVER_PORT = process.env.PORT;
 const SERVER_HOST = '0.0.0.0';
 const WELCOME_MSG = '='.repeat(40) + `\nNow listening on port ${SERVER_PORT}!\n` + '='.repeat(40) + '\n';
 
