@@ -21,17 +21,16 @@ router.get('/:userId', (req, res) => {
       }
 
       console.log('resolving with results: ');
-      console.log(results);
-      resolve(results);
+      console.log(results.rows);
+      resolve(results.rows);
     });
   });
 
   let userResult = [];
   
   userPromise
-    .then(results => userResult = results)
-    .catch(error => userResult = [])
-    .finally(res.send(userResult));
+    .then((ok) => {res.send(ok)})
+    .catch((e) => {res.send([])});
 
 });
 
