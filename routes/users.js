@@ -14,7 +14,14 @@ router.get('/:userId', (req, res) => {
   const query = `SELECT * FROM users WHERE id = ${userId};`;
   const userPromise = new Promise((resolve, reject) => {
     pool.query(query, (error, results) => {
-      if (error) reject();
+      if (error) {
+        console.log('error while executing query: ');
+        console.log(error);
+        reject();
+      }
+
+      console.log('resolving with results: ');
+      console.log(results);
       resolve(results);
     });
   });
