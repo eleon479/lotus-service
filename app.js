@@ -1,9 +1,6 @@
 // core express and database pool imports
 const express = require('express');
 const dotenv = require('dotenv');
-dotenv.config();
-
-const { pool } = require('./middleware/pg'); // change to /services ?
 const app = express();
 
 // 3rd party middleware imports
@@ -13,7 +10,10 @@ const helmet = require('helmet');
 // set up third party middleware
 app.use(express.json());
 app.use(helmet());
-app.use(morgan('dev'));
+app.use(morgan('tiny'));
+
+// load environment config
+dotenv.config();
 
 // lotus middleware and routes
 const cors = require('./middleware/cors');

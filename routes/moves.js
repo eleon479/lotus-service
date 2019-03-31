@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { pool } = require('../middleware/pg');
+const { pool } = require('../services/pgstore');
 
 const movesDb = [
   {
@@ -42,7 +42,6 @@ const movesDb = [
 ];
 
 router.get('/', (req, res) => {
-  res.send(movesDb); // remove
 
   const query = 'SELECT * FROM moves;'
   const movePromise = new Promise((resolve, reject) => {
