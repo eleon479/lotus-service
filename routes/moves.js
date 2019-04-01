@@ -2,73 +2,42 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../services/pgstore');
 
-const movesDb = [
-  {
-    moveId: 1,
-    userId: 1,
-    userTag: 'eleon479',
-    title: 'Tesla Earnings Short',
-    symbol: 'TSLA',
-    description: '(insert insider trading here)',
-    //tags: ['short', 'earnings', 'musk'],
-    entry: 273.5,
-    target: 250.0,
-    performance: 11.25
-  },
-  {
-    moveId: 2,
-    userId: 2,
-    userTag: 'wsb',
-    title: 'Micron Box Spread',
-    symbol: 'MU',
-    description: "It's risk free money.",
-    //tags: ['margin', 'call'],
-    entry: 27.75,
-    target: 50.0,
-    performance: -20.0
-  },
-  {
-    moveId: 3,
-    userId: 2,
-    userTag: 'wsb',
-    title: 'Boeing Rebound',
-    symbol: 'BA',
-    description: 'Stock sold off pretty hard last week - momentum play.',
-    //tags: ['bounce', '737', 'swing'],
-    entry: 391.5,
-    target: 430.0,
-    performance: -12.73
-  }
-];
-
+// get all moves
 router.get('/', (req, res) => {
 
-  const query = 'SELECT * FROM moves;'
+  const userId = req.query.userId;
+  const allMovesQuery = 'select * from moves;';
+  const userMovesQuery = `select * from moves where userId = ${userId};`;
+  const query = userId ? userMovesQuery : allMovesQuery;
   const movePromise = new Promise((resolve, reject) => {
-    pool.query(query, (error, result) => {
-      if (error) {
-        reject();
-      }
+    pool.query(query, (err, result) => {
+      if (err) reject();
       resolve(result.rows);
     });
   });
 
-  // use promise here
+  movePromise
+    .then((ok) => { res.send(ok) })
+    .catch((er) => { res.send([]) });
 
 });
 
+// get a specific move
 router.get('/:moveId', (req, res) => {
+
   const moveId = Number(req.params.moveId);
-  let movesResult = movesDb.find(move => move.moveId === moveId);
+  const query = `select * from moves where id = ${moveId};`;
+  const movePromise = new Promise((resolve, reject) => {
+    pool.query(query, (err, result) => {
+      if (err) reject();
+      resolve(result.rows);
+    });
+  });
 
-  res.send(movesResult);
-});
+  movePromise
+    .then((ok) => { res.send(ok[0]) })
+    .catch((er) => { res.send({}) });
 
-router.get('/user/:userId', (req, res) => {
-  const userId = Number(req.params.userId);
-  let movesResult = movesDb.filter(move => move.userId === userId);
-
-  res.send(movesResult);
 });
 
 module.exports = router;

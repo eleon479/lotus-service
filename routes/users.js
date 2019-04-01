@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { pool, getUsers } = require('../services/pgstore');
+const { pool } = require('../services/pgstore');
 
 router.get('/', (req, res) => {
 
