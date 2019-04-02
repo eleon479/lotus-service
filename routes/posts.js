@@ -13,9 +13,10 @@ router.get('/', (req, res) => {
         });
     });
 
-    // get back user info from the userId in the post rows
     postPromise
         .then((ok) => { res.send(ok) })
         .catch(() => { res.send([]) });
 
 });
+
+module.exports = router;
