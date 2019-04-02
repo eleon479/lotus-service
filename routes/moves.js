@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 
   movePromise
     .then((ok) => { res.send(ok) })
-    .catch((er) => { res.send([]) });
+    .catch(() => { res.send([]) });
 
 });
 
@@ -36,7 +36,7 @@ router.get('/:moveId', (req, res) => {
 
   movePromise
     .then((ok) => { res.send(ok[0]) })
-    .catch((er) => { res.send({}) });
+    .catch(() => { res.send({}) });
 
 });
 

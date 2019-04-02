@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
   userPromise
   .then((results) => { res.send(results); })
-  .catch((errors) => { res.send([]) });
+  .catch(() => { res.send([]) });
 
 });
 
@@ -31,7 +31,7 @@ router.get('/:userId', (req, res) => {
   
   userPromise
     .then((ok) => {res.send(ok[0])})
-    .catch((e) => {res.send([])});
+    .catch(() => {res.send([])});
 
 });
 
