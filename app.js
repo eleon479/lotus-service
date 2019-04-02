@@ -18,6 +18,7 @@ dotenv.config();
 // lotus middleware and routes
 const cors = require('./middleware/cors');
 const users = require('./routes/users');
+const posts = require('./routes/posts');
 const moves = require('./routes/moves');
 const prices = require('./routes/ext/prices');
 const quotes = require('./routes/ext/quotes');
@@ -26,6 +27,7 @@ const charts = require('./routes/ext/charts');
 // set up lotus middleware
 app.use(cors);
 app.use('/api/users', users);
+app.use('/api/posts', posts);
 app.use('/api/moves', moves);
 app.use('/api/ext/prices', prices);
 app.use('/api/ext/quotes', quotes);
