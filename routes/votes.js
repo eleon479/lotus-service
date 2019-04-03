@@ -43,6 +43,9 @@ router.post('/', (req, res) => {
     });
   });
 
+  console.log('executing query: ');
+  console.log(query);
+
   votePromise
     .then(ok => {
       res.send({ status: 'SUCCESS' });
