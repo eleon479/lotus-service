@@ -34,12 +34,20 @@ router.post('/', (req, res) => {
   const query = `insert into votes (userid, postid, type) values (${userId}, ${postId}, ${voteType});`;
   const votePromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
-      if (err) reject();
-      resolve(result.rows);
+      if (err) reject(err);
+      resolve(result);
     });
   });
 
-  votePromise.then(ok => res.send({ status: 'SUCCESS' })).catch(er => res.send({ status: 'FAILED' }));
+  votePromise
+    .then(ok => {
+      res.send({ status: 'SUCCESS' });
+    })
+    .catch(er => {
+      console.log('rejected promise in /votes, postgres query err: ');
+      console.log(er);
+      res.send({ status: 'FAILED' });
+    });
 });
 
 module.exports = router;
