@@ -6,8 +6,8 @@ const { pool } = require('../services/pgstore');
 router.get('/', (req, res) => {
 
   const userId = req.query.userId;
-  const allPostsQuery = 'SELECT posts.title, posts.contents, users.firstname, users.lastname, users.tag, users.avatar FROM posts JOIN users ON users.id = posts.userid;';
-  const userPostsQuery = `SELECT posts.title, posts.contents, users.firstname, users.lastname, users.tag, users.avatar FROM posts JOIN users ON users.id = posts.userid WHERE posts.userid = ${userId};`;
+  const allPostsQuery = 'SELECT posts.id, posts.title, posts.contents, users.firstname, users.lastname, users.tag, users.avatar FROM posts JOIN users ON users.id = posts.userid;';
+  const userPostsQuery = `SELECT posts.id, posts.title, posts.contents, users.firstname, users.lastname, users.tag, users.avatar FROM posts JOIN users ON users.id = posts.userid WHERE posts.userid = ${userId};`;
   const query = userId ? userPostsQuery : allPostsQuery;
   const postPromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
 router.get('/:postId', (req, res) => {
   
   const postId = Number(req.params.postId);
-  const query = `SELECT posts.title, posts.contents, users.firstname, users.lastname, users.tag, users.avatar FROM posts JOIN users ON users.id = posts.userid WHERE posts.id = ${postId};`;
+  const query = `SELECT posts.id, posts.title, posts.contents, users.firstname, users.lastname, users.tag, users.avatar FROM posts JOIN users ON users.id = posts.userid WHERE posts.id = ${postId};`;
   const postPromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
       if (err) reject();
