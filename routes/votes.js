@@ -17,3 +17,5 @@ router.post('/', (req, res) => {
 
   votePromise.then(res.send({ status: 'SUCCESS' })).catch(res.send({ status: 'FAILED' }));
 });
+
+module.exports = router;
