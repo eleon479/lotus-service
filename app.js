@@ -6,9 +6,12 @@ const app = express();
 // 3rd party middleware imports
 const morgan = require('morgan');
 const helmet = require('helmet');
+const bodyParser = require('body-parser');
 
 // set up third party middleware
-app.use(express.json());
+//app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet());
 app.use(morgan('tiny'));
 
