@@ -1,14 +1,17 @@
-// core express and database pool imports
 const express = require('express');
+const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const app = express();
-
-// 3rd party middleware imports
 const morgan = require('morgan');
 const helmet = require('helmet');
 
-// set up third party middleware
-app.use(express.json());
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(bodyParser.json());
+
+// headers and logging middleware
 app.use(helmet());
 app.use(morgan('tiny'));
 
