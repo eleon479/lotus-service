@@ -4,7 +4,6 @@ const { pool } = require('../services/pgstore');
 
 // get all moves
 router.get('/', (req, res) => {
-
   const userId = req.query.userId;
   const allMovesQuery = 'select * from moves;';
   const userMovesQuery = `select * from moves where userId = ${userId};`;
@@ -17,14 +16,16 @@ router.get('/', (req, res) => {
   });
 
   movePromise
-    .then((ok) => { res.send(ok) })
-    .catch(() => { res.send([]) });
-
+    .then(ok => {
+      res.send(ok);
+    })
+    .catch(() => {
+      res.send([]);
+    });
 });
 
 // get a specific move
 router.get('/:moveId', (req, res) => {
-
   const moveId = Number(req.params.moveId);
   const query = `select * from moves where id = ${moveId};`;
   const movePromise = new Promise((resolve, reject) => {
@@ -35,9 +36,12 @@ router.get('/:moveId', (req, res) => {
   });
 
   movePromise
-    .then((ok) => { res.send(ok[0]) })
-    .catch(() => { res.send({}) });
-
+    .then(ok => {
+      res.send(ok[0]);
+    })
+    .catch(() => {
+      res.send({});
+    });
 });
 
 module.exports = router;
