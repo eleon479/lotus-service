@@ -35,7 +35,7 @@ router.post('/', (req, res) => {
   console.log(`postId: ${postId}`);
   console.log(`voteType: ${voteType}`);
 
-  const query = `insert into votes (userid, postid, type) values ( ${userId}, ${postId}, ${voteType} );`;
+  const query = `insert into votes (userid, postid, type) values ( ${userId}, ${postId}, '${voteType}' );`;
   const votePromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
       if (err) reject(err);
