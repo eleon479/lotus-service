@@ -23,15 +23,19 @@ router.get('/', (req, res) => {
 
 // create a new vote
 router.post('/', (req, res) => {
-  const userId = Number(req.body.userId);
-  const postId = Number(req.body.postId);
-  const voteType = String(req.body.voteType);
+  //const userId = Number(req.body.userId);
+  //const postId = Number(req.body.postId);
+  //const voteType = String(req.body.voteType);
+
+  const userId = req.body.userId;
+  const postId = req.body.postId;
+  const voteType = req.body.voteType;
 
   console.log(`userId: ${userId}`);
   console.log(`postId: ${postId}`);
   console.log(`voteType: ${voteType}`);
 
-  const query = `insert into votes (userid, postid, type) values (${userId}, ${postId}, ${voteType});`;
+  const query = `insert into votes (userid, postid, type) values ( ${userId}, ${postId}, ${voteType} );`;
   const votePromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
       if (err) reject(err);
