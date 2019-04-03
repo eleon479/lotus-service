@@ -23,17 +23,9 @@ router.get('/', (req, res) => {
 
 // create a new vote
 router.post('/', (req, res) => {
-  //const userId = Number(req.body.userId);
-  //const postId = Number(req.body.postId);
-  //const voteType = String(req.body.voteType);
-
   const userId = req.body.userId;
   const postId = req.body.postId;
   const voteType = req.body.voteType;
-
-  console.log(`userId: ${userId}`);
-  console.log(`postId: ${postId}`);
-  console.log(`voteType: ${voteType}`);
 
   const query = `insert into votes (userid, postid, type) values ( ${userId}, ${postId}, '${voteType}' );`;
   const votePromise = new Promise((resolve, reject) => {
@@ -43,16 +35,11 @@ router.post('/', (req, res) => {
     });
   });
 
-  console.log('executing query: ');
-  console.log(query);
-
   votePromise
     .then(ok => {
       res.send({ status: 'SUCCESS' });
     })
     .catch(er => {
-      console.log('rejected promise in /votes, postgres query err: ');
-      console.log(er);
       res.send({ status: 'FAILED' });
     });
 });
