@@ -4,7 +4,11 @@ const { pool } = require('../services/pgstore');
 
 // get all votes
 router.get('/', (req, res) => {
-  const query = 'select * from votes;';
+  const userId = Number(req.query.userId);
+  const userVotesQuery = `select * from votes where userid = ${userId};`;
+  const allVotesQuery = 'select * from votes;';
+
+  const query = userId ? userVotesQuery : allVotesQuery;
   const votePromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
       if (err) reject();
@@ -27,7 +31,7 @@ router.post('/', (req, res) => {
   const postId = req.body.postId;
   const voteType = req.body.voteType;
 
-  const query = `insert into votes (userid, postid, type) values ( ${userId}, ${postId}, '${voteType}' );`;
+  const query = `insert into votes (userid, postid, votetype) values ( ${userId}, ${postId}, '${voteType}' );`;
   const votePromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
       if (err) reject(err);
