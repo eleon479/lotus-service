@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
       //if (!validPass) res.status(400).send(errorMessage);
       if (!validPass) errorResponse();
 
-      const token = jwt.sign({ id: account.id }, 'supersecretkey');
+      const token = jwt.sign({ id: account.id }, process.env.LOTUS_JWTPK);
       res.send(token);
     })
     .catch(er => {
