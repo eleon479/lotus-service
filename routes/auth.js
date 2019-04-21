@@ -7,11 +7,15 @@ router.post('/', async (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  const errorMessage = 'Invalid email/password combination.';
+  const missingResponse = () => res.send('Missing email or password.');
+  const errorResponse = () => res.send(errorMessage);
+
   if (!email || !password) {
-    res.status(400).send('Missing email or password.');
+    // res.status(400).send('Missing email or password.');
+    missingResponse();
   }
 
-  const errorMessage = 'Invalid email/password combination.';
   const query = `SELECT password FROM accounts WHERE email = '${email}';`;
   const accountPromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
@@ -24,11 +28,13 @@ router.post('/', async (req, res) => {
   accountPromise
     .then(async ok => {
       const validPass = await bcrypt.compare(password, ok.rows[0].password);
-      if (!validPass) res.status(400).send(errorMessage);
+      //if (!validPass) res.status(400).send(errorMessage);
+      if (!validPass) errorResponse();
       res.send(true);
     })
     .catch(er => {
-      res.status(400).send(errorMessage);
+      //res.status(400).send(errorMessage);
+      errorResponse();
     });
 });
 
