@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
   });
 
   accountPromise
-    .then(ok => {
+    .then(async ok => {
       const validPass = await bcrypt.compare(password, ok.rows[0].password);
       if (!validPass) res.status(400).send(errorMessage);
       res.send(true);
