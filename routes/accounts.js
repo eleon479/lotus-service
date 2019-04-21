@@ -6,8 +6,14 @@ const { pool } = require('../services/pgstore');
 router.post('/', async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  const pwhash = await bcrypt.hash(password, 10);
 
+  if (username && password) {
+    // implement more comprehensive validation here...
+  } else {
+    res.send({ status: 'INVALID', token: null });
+  }
+
+  const pwhash = await bcrypt.hash(password, 10);
   const query = `INSERT INTO accounts (username, password) VALUES ('${username}', '${pwhash}');`;
   const accountPromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
