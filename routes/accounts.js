@@ -3,8 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const { pool } = require('../services/pgstore');
 
-router.post('/', (req, res) => {
-
+router.post('/', async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const pwhash = await bcrypt.hash(password, 10);
