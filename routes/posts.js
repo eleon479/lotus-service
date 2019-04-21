@@ -5,8 +5,8 @@ const { pool } = require('../services/pgstore');
 // get all posts
 router.get('/', (req, res) => {
   const userId = req.query.userId;
-  const allPostsQuery = 'SELECT posts.*, users.tag, users.firstname, users.avatar FROM posts WHERE removed = FALSE JOIN users ON users.id = posts.userid;';
-  const userPostsQuery = `SELECT posts.*, users.tag, users.firstname, users.avatar FROM posts WHERE removed = FALSE JOIN users ON users.id = ${userId};`;
+  const allPostsQuery = 'SELECT posts.*, users.tag, users.firstname, users.avatar FROM posts JOIN users ON users.id = posts.userid WHERE NOT removed;';
+  const userPostsQuery = `SELECT posts.*, users.tag, users.firstname, users.avatar FROM posts JOIN users ON users.id = ${userId} WHERE NOT removed;`;
 
   const query = userId ? userPostsQuery : allPostsQuery;
   const postPromise = new Promise((resolve, reject) => {
@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
 // get a specific post
 router.get('/:postId', (req, res) => {
   const postId = Number(req.params.postId);
-  const query = `SELECT posts.*, users.firstname, users.lastname, users.tag, users.avatar FROM posts WHERE removed = FALSE JOIN users ON users.id = posts.userid WHERE posts.id = ${postId};`;
+  const query = `SELECT posts.*, users.firstname, users.lastname, users.tag, users.avatar FROM posts JOIN users ON users.id = posts.userid WHERE posts.id = ${postId} WHERE NOT removed;`;
   const postPromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
       if (err) reject();
