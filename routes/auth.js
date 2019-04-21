@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const { pool } = require('../services/pgstore');
+const jwt = require('jsonwebtoken');
 
 router.post('/', async (req, res) => {
   const email = req.body.email;
@@ -16,21 +17,23 @@ router.post('/', async (req, res) => {
     missingResponse();
   }
 
-  const query = `SELECT password FROM accounts WHERE email = '${email}';`;
+  const query = `SELECT * FROM accounts WHERE email = '${email}';`;
   const accountPromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
       if (err) reject(err);
       if (result.rows.length < 1) reject(new Error(errorMessage));
-      resolve(result);
+      resolve(result.rows[0]);
     });
   });
 
   accountPromise
-    .then(async ok => {
-      const validPass = await bcrypt.compare(password, ok.rows[0].password);
+    .then(async account => {
+      const validPass = await bcrypt.compare(password, account.password);
       //if (!validPass) res.status(400).send(errorMessage);
       if (!validPass) errorResponse();
-      res.send(true);
+
+      const token = jwt.sign({ id: account.id }, 'supersecretkey');
+      res.send(token);
     })
     .catch(er => {
       //res.status(400).send(errorMessage);
