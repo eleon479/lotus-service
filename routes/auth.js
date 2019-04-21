@@ -4,31 +4,31 @@ const bcrypt = require('bcrypt');
 const { pool } = require('../services/pgstore');
 
 router.post('/', async (req, res) => {
-  const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
 
-  if (username && email && password) {
-    // implement more comprehensive validation here...
-  } else {
-    res.send({ status: 'INVALID', token: null });
+  if (!email || !password) {
+    res.status(400).send('Missing email or password.');
   }
 
-  const pwhash = await bcrypt.hash(password, 10);
-  const query = `INSERT INTO accounts (username, email, password) VALUES ('${username}', '${email}', '${pwhash}');`;
+  const errorMessage = 'Invalid email/password combination.';
+  const query = `SELECT password FROM accounts WHERE email = '${email}';`;
   const accountPromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
       if (err) reject(err);
+      if (result.rows.length < 1) reject(new Error(errorMessage));
       resolve(result);
     });
   });
 
   accountPromise
     .then(ok => {
-      res.send({ status: 'OK', token: '???' });
+      const validPass = await bcrypt.compare(password, ok.rows[0].password);
+      if (!validPass) res.status(400).send(errorMessage);
+      res.send(true);
     })
     .catch(er => {
-      res.send({ status: 'BAD', token: null });
+      res.status(400).send(errorMessage);
     });
 });
 
