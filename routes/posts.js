@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../services/pgstore');
+const auth = require('../middleware/auth');
 
 // get all posts
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
   const userId = req.query.userId;
   const allPostsQuery =
     'SELECT posts.*, users.tag, users.firstname, users.avatar FROM posts JOIN users ON users.id = posts.userid WHERE NOT removed ORDER BY ts DESC;';
@@ -27,9 +28,9 @@ router.get('/', (req, res) => {
 });
 
 // get a specific post
-router.get('/:postId', (req, res) => {
+router.get('/:postId', auth, (req, res) => {
   const postId = Number(req.params.postId);
-  const query = `SELECT posts.*, users.firstname, users.lastname, users.tag, users.avatar FROM posts JOIN users ON users.id = posts.userid WHERE posts.id = ${postId} WHERE NOT removed ORDER BY ts DESC;`;
+  const query = `SELECT posts.*, users.firstname, users.lastname, users.tag, users.avatar FROM posts JOIN users ON users.id = posts.userid WHERE posts.id = ${postId} AND NOT removed;`;
   const postPromise = new Promise((resolve, reject) => {
     pool.query(query, (err, result) => {
       if (err) reject();

@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../services/pgstore');
+const auth = require('../middleware/auth');
 
 // get all votes
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
   const userId = Number(req.query.userId);
   const userVotesQuery = `select * from votes where userid = ${userId};`;
   const allVotesQuery = 'select * from votes;';
@@ -26,7 +27,7 @@ router.get('/', (req, res) => {
 });
 
 // create a new vote
-router.post('/', (req, res) => {
+router.post('/', auth, (req, res) => {
   const userId = req.body.userId;
   const postId = req.body.postId;
   const voteType = req.body.voteType;

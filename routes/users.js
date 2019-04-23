@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../services/pgstore');
+const auth = require('../middleware/auth');
 
-router.get('/', (req, res) => {
-
+// fetch all users
+router.get('/', auth, (req, res) => {
   const query = 'select * from users;';
   const userPromise = new Promise((resolve, reject) => {
     pool.query(query, (error, results) => {
@@ -13,13 +14,16 @@ router.get('/', (req, res) => {
   });
 
   userPromise
-  .then((results) => { res.send(results); })
-  .catch(() => { res.send([]) });
-
+    .then(results => {
+      res.send(results);
+    })
+    .catch(() => {
+      res.send([]);
+    });
 });
 
-router.get('/:userId', (req, res) => {
-
+// fetch specific user
+router.get('/:userId', auth, (req, res) => {
   const userId = Number(req.params.userId);
   const query = `SELECT * FROM users WHERE id = ${userId};`;
   const userPromise = new Promise((resolve, reject) => {
@@ -28,11 +32,14 @@ router.get('/:userId', (req, res) => {
       resolve(results.rows);
     });
   });
-  
-  userPromise
-    .then((ok) => {res.send(ok[0])})
-    .catch(() => {res.send([])});
 
+  userPromise
+    .then(ok => {
+      res.send(ok[0]);
+    })
+    .catch(() => {
+      res.send([]);
+    });
 });
 
 module.exports = router;

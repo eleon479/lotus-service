@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const { pool } = require('../services/pgstore');
+const auth = require('../middleware/auth');
 
 // get all moves
-router.get('/', (req, res) => {
+router.get('/', auth, (req, res) => {
   const userId = req.query.userId;
   const allMovesQuery = 'select * from moves;';
   const userMovesQuery = `select * from moves where userId = ${userId};`;
@@ -25,7 +26,7 @@ router.get('/', (req, res) => {
 });
 
 // get a specific move
-router.get('/:moveId', (req, res) => {
+router.get('/:moveId', auth, (req, res) => {
   const moveId = Number(req.params.moveId);
   const query = `select * from moves where id = ${moveId};`;
   const movePromise = new Promise((resolve, reject) => {
